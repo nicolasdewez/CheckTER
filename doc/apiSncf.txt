@@ -1,0 +1,145 @@
+Liste des Stations
+http://ms.api.ter-sncf.com/?action=StopAreaList
+
+Liste des stations d'une ville
+http://ms.api.ter-sncf.com/?action=StopAreaList&CityExternalCode=59350
+(59350 => code insee de lille)
+
+Liste des arrets d'une ligne
+http://ms.api.ter-sncf.com/?action=StopAreaList&LineExternalCode=OCETrain%20TER-87345009-87343004
+
+Liste des Lignes entre 2 stations 
+http://ms.api.ter-sncf.com/?action=LineList&StopareaExternalCode=OCE87345009;OCE87286005|and
+http://ms.api.ter-sncf.com/?action=LineList&StopareaExternalCode=OCE87345009;OCE87343004|and
+
+Liste des Lignes entre 2 stations suivant un mode de transport
+http://ms.api.ter-sncf.com/?action=LineList&StopareaExternalCode=OCE87345009;OCE87286005|and&ModeTypeExternalCode=OCETrain%20TER
+
+Liste des communes Insee
+http://www.insee.fr/fr/methodes/nomenclatures/cog/telechargement/2014/txt/france2014.zip
+ou via Api
+http://public.opendatasoft.com/explore/dataset/population-francaise-des-communes-2011/
+=> http://public.opendatasoft.com/api/records/1.0/search?dataset=population-francaise-des-communes-2011&q=lille
+
+Liste des horaires d'une ligne
+http://ms.api.ter-sncf.com/?action=VehicleJourneyList&LineExternalCode=OCETrain%20TER-87345009-87343004&Date=2015|04|07&EndDate=2015|04|07
+
+
+TROUVER UNE GARE
+-> A Partir d'une ville, définir le code insee
+-> a partir du code insee, rechercher arret
+
+TROUVER UNE LIGNE
+-> A partir de 2 gares
+-> Lister les arrets de la ligne
+
+TROUVER UN HORAIRE
+-> A partir d'une ligne et d'une date heure
+-> Lister les horaires dispos
+-> et les arrets avec horaires detailles.
+
+
+-----------------------
+|     STATIONS
+-----------------------
+DOUAI
+<StopArea StopAreaIdx="4877" StopAreaId="4257" StopAreaName="gare de Douai" StopAreaExternalCode="OCE87345009" MainStopArea="1" MultiModal="0" CarPark="0" MainConnection="0" AdditionalData="" ResaRailCode="">
+	<City CityIdx="12815" CityId="23221" CityName="Douai" CityExternalCode="59178" CityCode="59500">
+		<Country CountryIdx="1" CountryId="0" CountryName="France" CountryExternalCode="FRA"/>
+	</City>
+	<Coord>
+		<CoordX>653703</CoordX>
+		<CoordY>2597654</CoordY>
+	</Coord>
+	<HangList>
+		<Hang StopPointIdx="6659" Duration="0" ConnectionKind="2"/>
+		<Hang StopPointIdx="6660" Duration="0" ConnectionKind="2"/>
+		<Hang StopPointIdx="6658" Duration="0" ConnectionKind="2"/>
+		<Hang StopPointIdx="6661" Duration="0" ConnectionKind="2"/>
+	</HangList>
+	<ModeList ModeCount="3">
+		<ModeType ModeTypeIdx="3" ModeTypeExternalCode="OCECar TER" ModeTypeName="Car TER"/>
+		<ModeType ModeTypeIdx="21" ModeTypeExternalCode="OCETGV" ModeTypeName="TGV"/>
+		<ModeType ModeTypeIdx="24" ModeTypeExternalCode="OCETrain TER" ModeTypeName="Train TER"/>
+	</ModeList>
+</StopArea>
+
+VALENCIENNES
+<StopArea StopAreaIdx="4953" StopAreaId="4242" StopAreaName="gare de Valenciennes" StopAreaExternalCode="OCE87343004" MainStopArea="1" MultiModal="0" CarPark="0" MainConnection="0" AdditionalData="" ResaRailCode="">
+	<City CityIdx="13232" CityId="23638" CityName="Valenciennes" CityExternalCode="59606" CityCode="59300">
+		<Country CountryIdx="1" CountryId="0" CountryName="France" CountryExternalCode="FRA"/>
+	</City>
+	<Coord>
+		<CoordX>684160</CoordX>
+		<CoordY>2597088</CoordY>
+	</Coord>
+	<HangList>
+		<Hang StopPointIdx="6801" Duration="0" ConnectionKind="2"/>
+		<Hang StopPointIdx="6804" Duration="0" ConnectionKind="2"/>
+		<Hang StopPointIdx="6800" Duration="0" ConnectionKind="2"/>
+		<Hang StopPointIdx="6803" Duration="0" ConnectionKind="2"/>
+		<Hang StopPointIdx="6802" Duration="0" ConnectionKind="2"/>
+	</HangList>
+	<ModeList ModeCount="4">
+		<ModeType ModeTypeIdx="3" ModeTypeExternalCode="OCECar TER" ModeTypeName="Car TER"/>
+		<ModeType ModeTypeIdx="21" ModeTypeExternalCode="OCETGV" ModeTypeName="TGV"/>
+		<ModeType ModeTypeIdx="23" ModeTypeExternalCode="OCETrain" ModeTypeName="Train"/>
+		<ModeType ModeTypeIdx="24" ModeTypeExternalCode="OCETrain TER" ModeTypeName="Train TER"/>
+	</ModeList>
+</StopArea>
+
+LILLE FLANDRES
+<StopArea StopAreaIdx="4902" StopAreaId="3849" StopAreaName="gare de Lille Flandres" StopAreaExternalCode="OCE87286005" MainStopArea="1" MultiModal="0" CarPark="0" MainConnection="0" AdditionalData="" ResaRailCode="">
+	<City CityIdx="12984" CityId="23390" CityName="Lille" CityExternalCode="59350" CityCode="59800">
+		<Country CountryIdx="1" CountryId="0" CountryName="France" CountryExternalCode="FRA"/>
+	</City>
+	<Coord>
+		<CoordX>652078</CoordX>
+		<CoordY>2627125</CoordY>
+	</Coord>
+	<HangList>
+		<Hang StopPointIdx="6710" Duration="0" ConnectionKind="2"/>
+		<Hang StopPointIdx="6711" Duration="0" ConnectionKind="2"/>
+		<Hang StopPointIdx="6709" Duration="0" ConnectionKind="2"/>
+		<Hang StopPointIdx="6708" Duration="0" ConnectionKind="2"/>
+	</HangList>
+	<ModeList ModeCount="4">
+		<ModeType ModeTypeIdx="3" ModeTypeExternalCode="OCECar TER" ModeTypeName="Car TER"/>
+		<ModeType ModeTypeIdx="21" ModeTypeExternalCode="OCETGV" ModeTypeName="TGV"/>
+		<ModeType ModeTypeIdx="23" ModeTypeExternalCode="OCETrain" ModeTypeName="Train"/>
+		<ModeType ModeTypeIdx="24" ModeTypeExternalCode="OCETrain TER" ModeTypeName="Train TER"/>
+	</ModeList>
+</StopArea>
+
+-----------------------
+|       LIGNES
+-----------------------
+<Line LineIdx="1859" LineId="1858" LineName="Douai - Valenciennes" LineCode="" LineExternalCode="OCETrain TER-87345009-87343004" LineAdditionalData="" SortOrder="1859" LineColor="000000" HasAdaptedRoute="0">
+	<ModeType ModeTypeIdx="24" ModeTypeExternalCode="OCETrain TER" ModeTypeName="Train TER"/><Network NetworkIdx="11" NetworkId="10" NetworkName="SNCF" NetworkExternalCode="OCESN"/>
+	<Forward ForwardName="Douai vers Valenciennes">
+		<Direction>
+			<StopArea StopAreaIdx="4953" StopAreaId="4242" StopAreaName="gare de Valenciennes" StopAreaExternalCode="OCE87343004" MainStopArea="1" MultiModal="0" CarPark="0" MainConnection="0" AdditionalData="" ResaRailCode="">
+				<City CityIdx="13232" CityId="23638" CityName="Valenciennes" CityExternalCode="59606" CityCode="59300">
+					<Country CountryIdx="1" CountryId="0" CountryName="France" CountryExternalCode="FRA"/>
+				</City>
+				<Coord>
+					<CoordX>684160</CoordX>
+					<CoordY>2597088</CoordY>
+				</Coord>
+			</StopArea>
+		</Direction>
+	</Forward>
+	<Backward BackwardName="Valenciennes vers Douai">
+		<Direction>
+			<StopArea StopAreaIdx="4877" StopAreaId="4257" StopAreaName="gare de Douai" StopAreaExternalCode="OCE87345009" MainStopArea="1" MultiModal="0" CarPark="0" MainConnection="0" AdditionalData="" ResaRailCode="">
+				<City CityIdx="12815" CityId="23221" CityName="Douai" CityExternalCode="59178" CityCode="59500">
+					<Country CountryIdx="1" CountryId="0" CountryName="France" CountryExternalCode="FRA"/>
+				</City>
+				<Coord>
+					<CoordX>653703</CoordX>
+					<CoordY>2597654</CoordY>
+				</Coord>
+			</StopArea>
+		</Direction>
+	</Backward>
+</Line>
