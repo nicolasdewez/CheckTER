@@ -34,26 +34,28 @@ abstract class BaseCommand extends Command
     }
 
     /**
+     * @param string          $type
      * @param InputInterface  $input
      * @param OutputInterface $output
      */
-    protected function saveConfiguration(InputInterface $input, OutputInterface $output)
+    protected function saveConfiguration($type, InputInterface $input, OutputInterface $output)
     {
         $output->writeln(PHP_EOL.'<info>Saving configuration...</info>');
-        $pathFile = __DIR__.'/../../../configuration/'.base64_encode($input->getOption('save'));
+        $pathFile = __DIR__.'/../../../configuration/'.$type.'/'.base64_encode($input->getOption('save'));
         file_put_contents($pathFile, json_encode($this->configuration));
     }
 
     /**
+     * @param string          $type
      * @param InputInterface  $input
      * @param OutputInterface $output
      *
      * @throws BadConfigureException
      */
-    protected function loadConfiguration(InputInterface $input, OutputInterface $output)
+    protected function loadConfiguration($type, InputInterface $input, OutputInterface $output)
     {
         $output->writeln(PHP_EOL.'<info>Loading configuration...</info>');
-        $pathFile = __DIR__.'/../../../configuration/'.base64_encode($input->getOption('load'));
+        $pathFile = __DIR__.'/../../../configuration/'.$type.'/'.base64_encode($input->getOption('load'));
         if (!is_file($pathFile)) {
             throw new BadConfigureException(sprintf('Configuration %s doesn\'t exists', $input->getOption('load')));
         }

@@ -63,11 +63,11 @@ class StationFindCommand extends BaseCommand
         if (!$input->getOption('load')) {
             $this->interactive($input, $output);
         } else {
-            $this->loadConfiguration($input, $output);
+            $this->loadConfiguration('station', $input, $output);
         }
 
         if ($input->getOption('save')) {
-            $this->saveConfiguration($input, $output);
+            $this->saveConfiguration('station', $input, $output);
         }
 
         $this->displayResult($output);

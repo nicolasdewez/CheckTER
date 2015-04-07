@@ -7,6 +7,7 @@ set_time_limit(0);
 use App\Command\StationFindCommand;
 use App\Command\LineFindCommand;
 use App\Command\TimeFindCommand;
+use App\Command\ConfigurationListCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -25,4 +26,5 @@ $application->add(new StationFindCommand(
 ));
 $application->add(new LineFindCommand($container->get('app.client_sncf')));
 $application->add(new TimeFindCommand($container->get('app.client_sncf')));
+$application->add(new ConfigurationListCommand());
 $application->run();
