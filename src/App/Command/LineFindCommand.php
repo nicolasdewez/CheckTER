@@ -16,7 +16,7 @@ class LineFindCommand extends BaseCommand
     protected function configure()
     {
         $this
-            ->setName('apisncf:line:find')
+            ->setName('app:line:find')
             ->setDescription('Get line')
         ;
     }

@@ -17,7 +17,7 @@ class ConfigurationListCommand extends ContainerCommand
     protected function configure()
     {
         $this
-            ->setName('apisncf:configuration:list')
+            ->setName('app:configuration:list')
             ->setDescription('Get list of configurations')
             ->addOption('delete', 'd', InputOption::VALUE_NONE, 'Possible to delete configuration');
     }

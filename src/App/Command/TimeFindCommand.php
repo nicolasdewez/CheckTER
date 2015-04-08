@@ -16,7 +16,7 @@ class TimeFindCommand extends BaseCommand
     protected function configure()
     {
         $this
-            ->setName('apisncf:time:find')
+            ->setName('app:time:find')
             ->setDescription('Get next timetable')
         ;
     }

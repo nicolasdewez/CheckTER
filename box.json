@@ -1,0 +1,13 @@
+{
+  "chmod": "0755",
+  "finder": [
+    {
+      "name": "*",
+      "exclude": [ "Tests", "tests" ],
+      "in": ["src", "vendor"]
+    }
+  ],
+  "main": "src/app.php",
+  "output": "build/CheckTER.phar",
+  "stub": true
+}

@@ -20,7 +20,7 @@ class StationFindCommand extends BaseCommand
     protected function configure()
     {
         $this
-            ->setName('apisncf:station:find')
+            ->setName('app:station:find')
             ->setDescription('Get station')
             ->addOption('save', 's', InputOption::VALUE_REQUIRED, 'Save configuration in file')
             ->addOption('load', 'l', InputOption::VALUE_REQUIRED, 'Load configuration from file')
