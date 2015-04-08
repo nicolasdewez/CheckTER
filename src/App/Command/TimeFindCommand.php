@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use App\Service\ClientSncf;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -11,18 +10,6 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class TimeFindCommand extends BaseCommand
 {
-    /** @var ClientSncf */
-    protected $clientSncf;
-
-    /**
-     * @param ClientSncf $clientSncf
-     */
-    public function __construct(ClientSncf $clientSncf)
-    {
-        $this->clientSncf = $clientSncf;
-        parent::__construct();
-    }
-
     /**
      * {@inheritdoc}
      */

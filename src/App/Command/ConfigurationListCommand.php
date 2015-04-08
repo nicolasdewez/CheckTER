@@ -2,7 +2,6 @@
 
 namespace App\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,7 +11,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * Class ConfigurationListCommand.
  */
-class ConfigurationListCommand extends Command
+class ConfigurationListCommand extends ContainerCommand
 {
     /**
      * {@inheritdoc}

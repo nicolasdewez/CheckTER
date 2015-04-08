@@ -2,8 +2,6 @@
 
 namespace App\Command;
 
-use App\Service\ClientInsee;
-use App\Service\ClientSncf;
 use App\Service\InteractiveCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,30 +14,6 @@ use Symfony\Component\Console\Question\Question;
  */
 class StationFindCommand extends BaseCommand
 {
-    const CONFIGURE_PREFIX = 'Station_';
-
-    /** @var ClientSncf */
-    protected $clientSncf;
-
-    /** @var ClientInsee */
-    protected $clientInsee;
-
-    /** @var InteractiveCommand */
-    protected $interactiveCommand;
-
-    /**
-     * @param ClientSncf         $clientSncf
-     * @param ClientInsee        $clientInsee
-     * @param InteractiveCommand $interactiveCommand
-     */
-    public function __construct(ClientSncf $clientSncf, ClientInsee $clientInsee, InteractiveCommand $interactiveCommand)
-    {
-        $this->clientSncf = $clientSncf;
-        $this->clientInsee = $clientInsee;
-        $this->interactiveCommand = $interactiveCommand;
-        parent::__construct();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -82,29 +56,32 @@ class StationFindCommand extends BaseCommand
         $question = new Question('<question>Please enter the name of the city :</question> ', 'Lille');
         $this->configuration['cityUser'] = $questionHelper->ask($input, $output, $question);
 
+        /* @var InteractiveCommand */
+        $interactiveCommand = $this->getContainer()->get('app.interactive_command');
+
         // Search cities
-        $cities = $this->clientInsee->getCodeInsee($this->configuration['cityUser']);
+        $cities = $this->getContainer()->get('app.client_insee')->getCodeInsee($this->configuration['cityUser']);
         $this->configuration['city'] = $cities[0];
         if (1 < count($cities)) {
-            $table = $this->interactiveCommand->getTableCities($output, $cities);
+            $table = $interactiveCommand->getTableCities($output, $cities);
             $table->render();
 
-            $question = $this->interactiveCommand->getQuestionCities($cities);
+            $question = $interactiveCommand->getQuestionCities($cities);
             $this->configuration['city'] = $questionHelper->ask($input, $output, $question);
         }
 
         // Search Stations
-        $stations = $this->clientSncf->getStations(
+        $stations = $this->getContainer()->get('app.client_sncf')->getStations(
             $this->configuration['city']['insee'],
             $this->configuration['city']['name']
         );
 
         $this->configuration['station'] = $stations[0];
         if (1 < count($stations)) {
-            $table = $this->interactiveCommand->getTableStations($output, $stations);
+            $table = $interactiveCommand->getTableStations($output, $stations);
             $table->render();
 
-            $question = $this->interactiveCommand->getQuestionStations($stations);
+            $question = $interactiveCommand->getQuestionStations($stations);
             $this->configuration['station'] = $questionHelper->ask($input, $output, $question);
         }
     }

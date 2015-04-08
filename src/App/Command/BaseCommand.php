@@ -3,14 +3,13 @@
 namespace App\Command;
 
 use App\Exception\BadConfigureException;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class BaseCommand.
  */
-abstract class BaseCommand extends Command
+abstract class BaseCommand extends ContainerCommand
 {
     /** @var array */
     protected $configuration;
@@ -41,7 +40,7 @@ abstract class BaseCommand extends Command
     protected function saveConfiguration($type, InputInterface $input, OutputInterface $output)
     {
         $output->writeln(PHP_EOL.'<info>Saving configuration...</info>');
-        $pathFile = __DIR__.'/../../../configuration/'.$type.'/'.base64_encode($input->getOption('save'));
+        $pathFile = __PATH_CONFIGURATION__.'/'.$type.'/'.base64_encode($input->getOption('save'));
         file_put_contents($pathFile, json_encode($this->configuration));
     }
 
@@ -55,7 +54,7 @@ abstract class BaseCommand extends Command
     protected function loadConfiguration($type, InputInterface $input, OutputInterface $output)
     {
         $output->writeln(PHP_EOL.'<info>Loading configuration...</info>');
-        $pathFile = __DIR__.'/../../../configuration/'.$type.'/'.base64_encode($input->getOption('load'));
+        $pathFile = __PATH_CONFIGURATION__.'/'.$type.'/'.base64_encode($input->getOption('load'));
         if (!is_file($pathFile)) {
             throw new BadConfigureException(sprintf('Configuration %s doesn\'t exists', $input->getOption('load')));
         }
