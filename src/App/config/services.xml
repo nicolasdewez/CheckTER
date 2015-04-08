@@ -19,5 +19,7 @@
         </service>
         <service id="app.interactive_command" class="App\Service\InteractiveCommand">
         </service>
+        <service id="app.configuration" class="App\Service\Configuration">
+        </service>
     </services>
 </container>

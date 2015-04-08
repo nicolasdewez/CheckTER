@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Exception\BadConfigureException;
+use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Question\Question;
@@ -82,6 +83,61 @@ class InteractiveCommand
             }
 
             return $stations[$answer];
+        });
+        $question->setMaxAttempts(2);
+
+        return $question;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param array           $configurations
+     * @param bool            $isDelete
+     *
+     * @return Table
+     */
+    public function getTableConfigurations(OutputInterface $output, array $configurations, $isDelete)
+    {
+        $table = new Table($output);
+        $headers = ['Name', 'Code'];
+        if ($isDelete) {
+            array_unshift($headers, '');
+        }
+        $table->setHeaders($headers);
+
+        if (count($configurations)) {
+            foreach ($configurations as $key => $configuration) {
+                $values = [$configuration['name'], $configuration['encoded']];
+                if ($isDelete) {
+                    $key = sprintf('<info>%d</info>', $key);
+                    array_unshift($values, $key);
+                }
+                $table->addRow($values);
+            }
+        } else {
+            $table->addRow([new TableCell('No result', ['colspan' => $isDelete ? 3 : 2])]);
+        }
+
+        return $table;
+    }
+
+    /**
+     * @param array $configurations
+     *
+     * @return Question
+     */
+    public function getQuestionConfiguration(array $configurations)
+    {
+        $question = new Question('<question>Please enter the index of configuration to delete (-1 -> quit) :</question> ', '0');
+        $question->setValidator(function ($answer) use ($configurations) {
+            if (!is_numeric($answer) || -1 > $answer || count($configurations) <= $answer) {
+                throw new BadConfigureException('Your choice is incorrect');
+            }
+            if ('-1' === $answer) {
+                return;
+            }
+
+            return $configurations[$answer];
         });
         $question->setMaxAttempts(2);
 
