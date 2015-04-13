@@ -27,7 +27,7 @@ abstract class BaseCommand extends ContainerCommand
 
         $configurationName = $input->getOption('save') ?: '';
         $configurationName = $configurationName ?:  $input->getOption('load');
-        if (preg_match('#[/\# ]#', $configurationName)) {
+        if (preg_match('#[/\#]#', $configurationName)) {
             throw new BadConfigureException('Bad name of configuration');
         }
     }
@@ -40,8 +40,7 @@ abstract class BaseCommand extends ContainerCommand
     protected function saveConfiguration($type, InputInterface $input, OutputInterface $output)
     {
         $output->writeln(PHP_EOL.'<info>Saving configuration...</info>');
-        $pathFile = __PATH_CONFIGURATION__.'/'.$type.'/'.base64_encode($input->getOption('save'));
-        file_put_contents($pathFile, json_encode($this->configuration));
+        $this->getContainer()->get('app.configuration')->save($type, $input->getOption('save'), $this->configuration);
     }
 
     /**
@@ -54,11 +53,7 @@ abstract class BaseCommand extends ContainerCommand
     protected function loadConfiguration($type, InputInterface $input, OutputInterface $output)
     {
         $output->writeln(PHP_EOL.'<info>Loading configuration...</info>');
-        $pathFile = __PATH_CONFIGURATION__.'/'.$type.'/'.base64_encode($input->getOption('load'));
-        if (!is_file($pathFile)) {
-            throw new BadConfigureException(sprintf('Configuration %s doesn\'t exists', $input->getOption('load')));
-        }
-        $this->configuration = json_decode(file_get_contents($pathFile), true);
+        $this->configuration = $this->getContainer()->get('app.configuration')->load($type, $input->getOption('load'));
     }
 
     /**

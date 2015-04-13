@@ -10,6 +10,12 @@ use Symfony\Component\Finder\Finder;
  */
 class Configuration
 {
+    const DECODED = 1;
+    const ENCODED = 2;
+
+    const STATION = 'station';
+    const LINE = 'line';
+
     /**
      * @param string $type
      *
@@ -32,6 +38,58 @@ class Configuration
         }
 
         return $configurations;
+    }
+
+    /**
+     * @param string $type
+     * @param string $name
+     *
+     * @return array mixed
+     *
+     * @throws BadConfigureException
+     */
+    public function load($type, $name)
+    {
+        $pathFile = __PATH_CONFIGURATION__.'/'.$type.'/'.base64_encode($name);
+        if (!is_file($pathFile)) {
+            throw new BadConfigureException(sprintf('Configuration %s doesn\'t exists', $name));
+        }
+
+        return json_decode(file_get_contents($pathFile), true);
+    }
+
+    /**
+     * @param string $type
+     * @param string $name
+     * @param string $data
+     */
+    public function save($type, $name, $data)
+    {
+        $pathFile = __PATH_CONFIGURATION__.'/'.$type.'/'.base64_encode($name);
+        file_put_contents($pathFile, json_encode($data));
+    }
+
+    /**
+     * @param string $config
+     * @param array  $configurations
+     * @param int    $typeSearch
+     *
+     * @return bool
+     */
+    public function isConfiguration($config, array $configurations, $typeSearch = self::DECODED)
+    {
+        $key = 'name';
+        if (self::ENCODED === $typeSearch) {
+            $key = 'encoded';
+        }
+
+        foreach ($configurations as $configuration) {
+            if ($config === $configuration[$key]) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

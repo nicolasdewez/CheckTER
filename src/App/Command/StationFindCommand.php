@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\Configuration;
 use App\Service\InteractiveCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,14 +38,16 @@ class StationFindCommand extends BaseCommand
         if (!$input->getOption('load')) {
             $this->interactive($input, $output);
         } else {
-            $this->loadConfiguration('station', $input, $output);
+            $this->loadConfiguration(Configuration::STATION, $input, $output);
         }
 
         if ($input->getOption('save')) {
-            $this->saveConfiguration('station', $input, $output);
+            $this->saveConfiguration(Configuration::STATION, $input, $output);
         }
 
         $this->displayResult($output);
+
+        return $this->configuration;
     }
 
     /**

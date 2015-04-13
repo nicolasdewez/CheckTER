@@ -17,9 +17,10 @@
         <service id="app.client_insee" class="App\Service\ClientInsee">
             <argument>%api_insee_config%</argument>
         </service>
-        <service id="app.interactive_command" class="App\Service\InteractiveCommand">
-        </service>
         <service id="app.configuration" class="App\Service\Configuration">
+        </service>
+        <service id="app.interactive_command" class="App\Service\InteractiveCommand">
+            <argument type="service" id="app.configuration"/>
         </service>
     </services>
 </container>

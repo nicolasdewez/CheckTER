@@ -24,6 +24,9 @@ http://public.opendatasoft.com/explore/dataset/population-francaise-des-communes
 Liste des horaires d'une ligne
 http://ms.api.ter-sncf.com/?action=VehicleJourneyList&LineExternalCode=OCETrain%20TER-87345009-87343004&Date=2015|04|07&EndDate=2015|04|07
 
+Liste des horaires entre stations
+http://ms.api.ter-sncf.com/?action=VehicleJourneyList&StopareaExternalCode=OCE87345009;OCE87286005|and&Date=2015|04|14&EndDate=2015|04|14
+
 
 TROUVER UNE GARE
 -> A Partir d'une ville, définir le code insee

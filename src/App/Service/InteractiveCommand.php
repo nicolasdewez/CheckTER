@@ -13,6 +13,17 @@ use Symfony\Component\Console\Question\Question;
  */
 class InteractiveCommand
 {
+    /** @var Configuration */
+    protected $configSrv;
+
+    /**
+     * @param Configuration $configuration
+     */
+    public function __construct(Configuration $configuration)
+    {
+        $this->configSrv = $configuration;
+    }
+
     /**
      * @param OutputInterface $output
      * @param array           $cities
@@ -83,6 +94,45 @@ class InteractiveCommand
             }
 
             return $stations[$answer];
+        });
+        $question->setMaxAttempts(2);
+
+        return $question;
+    }
+
+    /**
+     * @param array  $configurations
+     * @param string $station
+     *
+     * @return Question
+     */
+    public function getQuestionLineLoadStation(array $configurations, $station)
+    {
+        $question = new Question('<question>Please enter configuration name of station to '.$station.' :</question> ');
+        $question->setValidator(function ($answer) use ($configurations) {
+            if (!$this->configSrv->isConfiguration($answer, $configurations)) {
+                throw new BadConfigureException('This configuration doesn\'t exists');
+            }
+
+            return $answer;
+        });
+        $question->setMaxAttempts(3);
+
+        return $question;
+    }
+
+    /**
+     * @return Question
+     */
+    public function getQuestionStops()
+    {
+        $question = new Question('<question>Please enter the code of line :</question> ', '');
+        $question->setValidator(function ($answer) {
+            if (empty($answer)) {
+                throw new BadConfigureException('Please enter a value');
+            }
+
+            return $answer;
         });
         $question->setMaxAttempts(2);
 
