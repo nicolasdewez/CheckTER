@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\Exception\BadConfigureException;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -13,6 +14,17 @@ abstract class BaseCommand extends ContainerCommand
 {
     /** @var array */
     protected $configuration;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure()
+    {
+        $this
+            ->addOption('save', 's', InputOption::VALUE_REQUIRED, 'Save configuration in file')
+            ->addOption('load', 'l', InputOption::VALUE_REQUIRED, 'Load configuration from file')
+        ;
+    }
 
     /**
      * @param InputInterface $input

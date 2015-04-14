@@ -6,6 +6,7 @@ use App\Exception\BadConfigureException;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
 
 /**
@@ -106,7 +107,7 @@ class InteractiveCommand
      *
      * @return Question
      */
-    public function getQuestionLineLoadStation(array $configurations, $station)
+    public function getQuestionLoadStation(array $configurations, $station)
     {
         $question = new Question('<question>Please enter configuration name of station to '.$station.' :</question> ');
         $question->setValidator(function ($answer) use ($configurations) {
@@ -124,7 +125,7 @@ class InteractiveCommand
     /**
      * @return Question
      */
-    public function getQuestionStops()
+    public function getQuestionLoadLine()
     {
         $question = new Question('<question>Please enter the code of line :</question> ', '');
         $question->setValidator(function ($answer) {
@@ -133,6 +134,63 @@ class InteractiveCommand
             }
 
             return $answer;
+        });
+        $question->setMaxAttempts(2);
+
+        return $question;
+    }
+
+    /**
+     * @return ChoiceQuestion
+     */
+    public function getQuestionSearchMethodForTime()
+    {
+        $question = new ChoiceQuestion(
+            '<question>Please enter the index of search method :</question> ',
+            [Configuration::LINE => 'Enter a line code', Configuration::STATION => 'Enter a stations code'],
+            Configuration::LINE
+        );
+        $question->setErrorMessage('Your choice is not valid');
+
+        return $question;
+    }
+
+    /**
+     * @return ChoiceQuestion
+     */
+    public function getQuestionSearchDate()
+    {
+        $question = new Question('<question>Please enter the date to search (Y-m-d, default now) :</question> ', new \DateTime());
+        $question->setValidator(function ($answer) {
+            if ($answer instanceof \DateTime) {
+                $answer->setTime(0, 0, 0);
+
+                return $answer;
+            }
+
+            return new \DateTime($answer);
+        });
+        $question->setMaxAttempts(2);
+
+        return $question;
+    }
+
+    /**
+     * @param \DateTime $date
+     *
+     * @return ChoiceQuestion
+     */
+    public function getQuestionSearchTime(\DateTime $date)
+    {
+        $now = new \DateTime();
+        $question = new Question('<question>Please enter the time to search (H:i, default now) :</question> ', $now->format('H:i'));
+        $question->setValidator(function ($answer) use ($date) {
+            if (!preg_match('#([0-9]{2}):([0-9]{2})#', $answer, $matches)) {
+                throw new BadConfigureException('Please enter a correct value');
+            }
+            $date->setTime($matches[1], $matches[2], 0);
+
+            return $date;
         });
         $question->setMaxAttempts(2);
 

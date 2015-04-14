@@ -15,6 +15,7 @@ class Configuration
 
     const STATION = 'station';
     const LINE = 'line';
+    const TIME = 'time';
 
     /**
      * @param string $type
@@ -67,6 +68,24 @@ class Configuration
     {
         $pathFile = __PATH_CONFIGURATION__.'/'.$type.'/'.base64_encode($name);
         file_put_contents($pathFile, json_encode($data));
+    }
+
+    /**
+     * @param array  $configuration
+     * @param string $name
+     */
+    public function saveLinesDetails(array $configuration, $name)
+    {
+        foreach ($configuration['lines'] as $line) {
+            $data = [
+                'start' => $configuration['start'],
+                'end' => $configuration['end'],
+                'lines' => [$line],
+            ];
+
+            $name = sprintf('%s_%s', $name, $line['code']);
+            $this->save(Configuration::LINE, $name, $data);
+        }
     }
 
     /**

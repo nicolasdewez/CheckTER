@@ -25,10 +25,10 @@ class LineFindCommand extends BaseCommand
             ->setDescription('Get line for stations')
             ->addOption('start', null, InputOption::VALUE_REQUIRED, 'Start station')
             ->addOption('end', null, InputOption::VALUE_REQUIRED, 'End station')
-            ->addOption('save', 's', InputOption::VALUE_REQUIRED, 'Save configuration in file')
-            ->addOption('load', 'l', InputOption::VALUE_REQUIRED, 'Load configuration from file')
             ->addOption('display-stops', 'd', InputOption::VALUE_NONE, 'Display stops')
         ;
+
+        parent::configure();
     }
 
     /**
@@ -46,29 +46,11 @@ class LineFindCommand extends BaseCommand
 
         if ($input->getOption('save')) {
             $this->saveConfiguration(Configuration::LINE, $input, $output);
-            $this->saveLines($input);
+            $this->getContainer()->get('app.configuration')->saveLinesDetails($this->configuration, $input->getOption('save'));
         }
 
         $this->configuration['stops'] = $input->getOption('display-stops');
         $this->displayResult($output);
-    }
-
-    /**
-     * @param InputInterface $input
-     */
-    protected function saveLines(InputInterface $input)
-    {
-        $configSrv = $this->getContainer()->get('app.configuration');
-        foreach ($this->configuration['lines'] as $line) {
-            $data = [
-                'start' => $this->configuration['start'],
-                'end' => $this->configuration['end'],
-                'lines' => [$line],
-            ];
-
-            $name = sprintf('%s_%s', $input->getOption('save'), $line['code']);
-            $configSrv->save(Configuration::LINE, $name, $data);
-        }
     }
 
     /**
@@ -101,9 +83,9 @@ class LineFindCommand extends BaseCommand
             $this->configuration[$station] = $configurationSrv->load('station', $input->getOption($station));
         } else {
             $configurations = $configurationSrv->get('station');
-            $question = $this->getContainer()->get('app.interactive_command')->getQuestionLineLoadStation($configurations, $station);
-            $start = $questionHelper->ask($input, $output, $question);
-            $this->configuration[$station] = $configurationSrv->load('station', $start);
+            $question = $this->getContainer()->get('app.interactive_command')->getQuestionLoadStation($configurations, $station);
+            $response = $questionHelper->ask($input, $output, $question);
+            $this->configuration[$station] = $configurationSrv->load('station', $response);
         }
     }
 
@@ -137,12 +119,12 @@ class LineFindCommand extends BaseCommand
                 new TableCell($line['name'], ['rowspan' => $nbStops]),
                 new TableCell($line['code'], ['rowspan' => $nbStops]),
                 isset($line['stops'][0]) ? $line['stops'][0]['name'] : '',
-            ] : [$line['name'], $line['code']] ;
+            ] : [$line['name'], $line['code']];
 
             $table->addRow($row);
 
             if ($this->configuration['stops']) {
-                for ($i=1; $i<$nbStops; $i++) {
+                for ($i = 1; $i<$nbStops; $i++) {
                     $table->addRow([$line['stops'][$i]['name']]);
                 }
             }

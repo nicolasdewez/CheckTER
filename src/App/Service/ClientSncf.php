@@ -124,4 +124,38 @@ class ClientSncf extends ClientGuzzle
 
         return $stops;
     }
+
+    /**
+     * @param string    $start
+     * @param string    $end
+     * @param \DateTime $dateStart
+     * @param \DateTime $dateEnd
+     *
+     * @return array
+     *
+     * @throws ClientException
+     */
+    public function getTimes($start, $end, \DateTime $dateStart, \DateTime $dateEnd)
+    {
+        $stops = sprintf('%s;%s|and', $start, $end);
+
+        try {
+            $this->get('/', [
+                'query' => [
+                    'action' => 'VehicleJourneyList',
+                    'StopareaExternalCode' => $stops,
+                    'Date' => $dateStart->format('Y|m|d'),
+                    'StartTime' => $dateStart->format('H|i'),
+                    'EndDate' => $dateEnd->format('Y|m|d'),
+                    'EndTime' => $dateEnd->format('H|i'),
+                ],
+            ])->xml();
+        } catch (RequestException $exception) {
+            throw new ClientException('Error during the call to the Sncf api');
+        }
+
+        $times = [];
+
+        return $times;
+    }
 }

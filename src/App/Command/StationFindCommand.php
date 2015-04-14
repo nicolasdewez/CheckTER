@@ -3,10 +3,8 @@
 namespace App\Command;
 
 use App\Service\Configuration;
-use App\Service\InteractiveCommand;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
@@ -23,9 +21,9 @@ class StationFindCommand extends BaseCommand
         $this
             ->setName('app:station:find')
             ->setDescription('Get station')
-            ->addOption('save', 's', InputOption::VALUE_REQUIRED, 'Save configuration in file')
-            ->addOption('load', 'l', InputOption::VALUE_REQUIRED, 'Load configuration from file')
         ;
+
+        parent::configure();
     }
 
     /**
@@ -59,7 +57,6 @@ class StationFindCommand extends BaseCommand
         $question = new Question('<question>Please enter the name of the city :</question> ', 'Lille');
         $this->configuration['cityUser'] = $questionHelper->ask($input, $output, $question);
 
-        /* @var InteractiveCommand */
         $interactiveCommand = $this->getContainer()->get('app.interactive_command');
 
         // Search cities
